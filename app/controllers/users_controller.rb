@@ -21,6 +21,7 @@ class UsersController < ApplicationController
     
     if @user.save
       # 成功
+      log_in @user
       flash[:success] = "Wellcome to Sample App"
       redirect_to @user # redirect_to user_path(@user.id)の省略形
     else
