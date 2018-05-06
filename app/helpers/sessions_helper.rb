@@ -1,9 +1,16 @@
 module SessionsHelper
   
+  # 渡されたユーザーをログイン状態にする
   def log_in(user)
     session[:user_id] = user.id
   end
+ 
+  # 渡されたユーザーがログインユーザーであればtrueを返す
+  def current_user?(user)
+    user == current_user
+  end
   
+  # 記憶トークン(cookie)に対応するユーザーを返す
   def current_user
     if (user_id = session[:user_id])
       @current_user ||= User.find_by(id: user_id)

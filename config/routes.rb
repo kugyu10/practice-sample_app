@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   root 'static_pages#home'
 
   resources :users
-
+  get '/hoges/:id',  to: 'users#edit'
 
   
   get '/home',    to: 'static_pages#home'
