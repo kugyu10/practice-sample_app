@@ -5,11 +5,9 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by(email: params[:session][:email])
     if @user && @user.authenticate(params[:session][:password])
-      #成功
       log_in @user
-      # Remember meがチェックされていたら
       params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
-      redirect_to @user
+      redirect_back_or @user 
     else
       #失敗
       flash.now[:danger] = 'Invalid email/password combination' 

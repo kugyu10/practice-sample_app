@@ -22,14 +22,14 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
   end
   
-  test "should redirect edit when logged in as wrong user" do
+  test "違うユーザーでログイン時、editページは開かない" do
     log_in_as(@other_user)
     get edit_user_path(@user)
     assert flash.empty?
     assert_redirected_to root_url
   end
 
-  test "should redirect update when logged in as wrong user" do
+  test "違うユーザーでログイン時、updateは実行しない" do
     log_in_as(@other_user)
     patch user_path(@user), params: { user: { name: @user.name,
                                               email: @user.email } }
@@ -38,7 +38,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
   end
   
   
-  test "user#edit失敗時" do
+  test "user#edit失敗時のテスト" do
     log_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
@@ -54,7 +54,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_select 'div.alert'
   end
    
-  test "user#edit成功" do
+  test "user#edit成功時のテスト" do
     log_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
@@ -70,4 +70,33 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_equal name,  @user.name
     assert_equal email, @user.email
   end
+  
+  
+  test "フレンドリーフォワードのテスト" do
+    get edit_user_path(@user)
+    log_in_as(@user)
+    assert_redirected_to edit_user_url(@user)
+    name  = "Foo Bar"
+    email = "foo@bar.com"
+    patch user_path(@user), params: { user: { name:  name,
+                                              email: email,
+                                              password:              "",
+                                              password_confirmation: "" } }
+    assert_not flash.empty?
+    assert_redirected_to @user
+    @user.reload
+    assert_equal name,  @user.name
+    assert_equal email, @user.email
+  end
+
+  test "フレンドリーログインのURLがリセットされる" do
+    get edit_user_path(@user)
+    log_in_as(@user)
+    assert_redirected_to edit_user_url(@user)
+
+    delete logout_path
+    log_in_as(@other_user)
+    assert_redirected_to @other_user  
+  end
+  
 end

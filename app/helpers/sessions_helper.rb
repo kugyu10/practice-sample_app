@@ -39,9 +39,21 @@ module SessionsHelper
     cookies.permanent[:remember_token] = user.remember_token 
   end
   
+  # Remember me の逆
   def forget(user)
     user.forget
     cookies.delete(:user_id)
     cookies.delete(:remember_token)
+  end
+  
+  # 記憶したURL (もしくはデフォルト値) にリダイレクト
+  def redirect_back_or(default)
+    redirect_to(session[:forwarding_url] || default)
+    session.delete(:forwarding_url)
+  end
+
+  # 今のURLをフォワード先URLとして覚えておく  
+  def store_forwarding_url
+    session[:forwarding_url] = request.original_url if request.get?
   end
 end
