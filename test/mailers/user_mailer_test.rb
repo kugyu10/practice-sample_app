@@ -13,7 +13,7 @@ class UserMailerTest < ActionMailer::TestCase
     assert_match CGI.escape(user.email),  mail.body.encoded
   end
 
-  test "password_reset" do
+  test "パスワードリセットのテスト" do
     user = users(:admin)
     user.reset_token = User.new_token
     mail = UserMailer.password_reset(user)
