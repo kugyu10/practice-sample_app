@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
   def home
-    # defaultが走る => app/views/static_pages/home.html.erb
+    @micropost = current_user.microposts.build if logged_in?
   end
 
   def help
