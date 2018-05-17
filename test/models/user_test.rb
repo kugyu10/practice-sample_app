@@ -88,4 +88,15 @@ class UserTest < ActiveSupport::TestCase
       @user.destroy
     end
   end
+  
+   test "他ユーザーをフォロー・アンフォローできる" do
+    kugyu10 = users(:admin)
+    user_9  = users(:user_9)
+    assert_not kugyu10.following?(user_9)
+    kugyu10.follow(user_9)
+    assert kugyu10.following?(user_9)
+    assert user_9.followers.include?(kugyu10)
+    kugyu10.unfollow(user_9)
+    assert_not kugyu10.following?(user_9)
+  end
 end
