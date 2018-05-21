@@ -1,15 +1,15 @@
 one:
-  follower: michael
-  followed: lana
+  follower: user_2
+  followed: user_3
 
 two:
-  follower: michael
-  followed: malory
+  follower: user_3
+  followed: user_2
 
 three:
-  follower: lana
-  followed: michael
+  follower: user_2
+  followed: user_4
 
 four:
-  follower: archer
-  followed: michael
+  follower: user_5
+  followed: user_2
