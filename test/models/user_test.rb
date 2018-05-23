@@ -99,4 +99,22 @@ class UserTest < ActiveSupport::TestCase
     kugyu10.unfollow(user_9)
     assert_not kugyu10.following?(user_9)
   end
+  
+  test "feedが正しい投稿を持っている" do
+    kugyu10 = users(:admin)
+    archer  = users(:user_2)
+    lana    = users(:user_3)
+    # フォローしているユーザーの投稿を確認
+    lana.microposts.each do |post_following|
+      assert kugyu10.feed.include?(post_following)
+    end
+    # 自分自身の投稿を確認
+    kugyu10.microposts.each do |post_self|
+      assert kugyu10.feed.include?(post_self)
+    end
+    # フォローしていないユーザーの投稿を確認
+    archer.microposts.each do |post_unfollowed|
+      assert_not kugyu10.feed.include?(post_unfollowed)
+    end
+  end
 end
